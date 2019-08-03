@@ -215,8 +215,8 @@ public class Menu {
 
 		mensaje += "******************************************************************\n";
 		mensaje += "****************** BIENVENIDO AL BUSCAMINAS **********************\n";
-		mensaje += "*************** Desarrollado por: Camilo Barrios *****************\n";
-		mensaje += "****************** <groovy.kmilo@gmail.com> **********************\n";
+		mensaje += "************ Desarrollado por: Camilo Vivas Mañunga **************\n";
+		mensaje += "***************** <camilo-152000@hotmail.com> ********************\n";
 		mensaje += "********************** Universidad Icesi  ************************\n";
 		mensaje += "******************************************************************\n";
 
