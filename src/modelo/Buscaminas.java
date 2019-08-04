@@ -128,7 +128,16 @@ public class Buscaminas {
 	private void inicializarPartida() {
 
 		// TODO
-
+		if(nivel == PRINCIPIANTE) {
+			casillas = new Casilla [FILAS_PRINCIPIANTE] [COLUMNAS_PRINCIPIANTE];
+		}
+		if(nivel ==  INTERMEDIO) {
+			casillas = new Casilla [FILAS_INTERMEDIO] [COLUMNAS_INTERMEDIO];
+		}
+		
+		if(nivel == EXPERTO) {
+			casillas = new Casilla [COLUMNAS_EXPERTO] [FILAS_EXPERTO];
+		}
 	}
 
 
