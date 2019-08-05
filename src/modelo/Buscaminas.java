@@ -145,7 +145,7 @@ public class Buscaminas {
 	 * Metodo que se encarga de inicializar todas las casillas que no son minas
 	 */
 	public void inicializarCasillasLibres() {
-
+		
 		// TODO
 
 	}
@@ -157,15 +157,16 @@ public class Buscaminas {
 	 * @param j - la columna de la matriz
 	 * @return int - La cantidad de minas que tiene alrededor la casilla [i][j]
 	 */
-	public int cantidadMinasAlrededor(int i, int j) {
+	public int cantidadMinasAlrededor(int i, int j) { //que rango cubre el alrededor?
 
 		// TODO
 		int contador = 0;
 		Casilla t = casillas [i][j];
 		for(int h = 0; h<casillas.length; h++) {
 			for(int k = 0; k<casillas[0].length; k++) {
-				if(casillas[i][j].esMina() == true) {
+				if(casillas[h][k].esMina() == true) {
 					contador++;
+					casillas[i][j].modificarValor(contador);
 				}	
 			}
 			
@@ -190,15 +191,16 @@ public class Buscaminas {
 	 * @return String - El tablero en formato String
 	 */
 	public String mostrarTablero() {
-		int num = 1;
 		// TODO
+		int num = 1;
 		for(int i = 0; i<casillas.length; i ++) {//columnas
 			for(int j = 0; j<casillas[0].length;j++) {
-				
+				casillas[i][j].modificarValor(num);
+				num++;
 			}
 		}
 
-		return null;
+		return casillas.toString();
 	}
 
 
@@ -208,6 +210,14 @@ public class Buscaminas {
 	public void resolver() {
 
 		// TODO
+		for(int i = 0; i<casillas.length; i++) {
+			for(int j = 0; j<casillas[0].length; j ++) {
+				if(casillas[i][j].darSeleccionada() == false) {
+					casillas[i][j].destapar();
+				}
+				
+			}
+		}
 
 	}
 
@@ -229,7 +239,12 @@ public class Buscaminas {
 	 */
 	public boolean abrirCasilla(int i, int j) {
 		// TODO
-		return true;
+		boolean posible = true;
+		casillas[i][j].destapar();
+		if(casillas[i][j].esMina() == true) {
+			posible = false;
+		}
+		return posible;
 	}
 
 
@@ -239,7 +254,17 @@ public class Buscaminas {
 	 */
 	public boolean gano() {
 		// TODO
-		return true;
+		boolean gano = true;
+		for(int i = 0; i< casillas.length && !gano; i++) {
+			for(int j = 0; j<casillas[i].length && !gano; j++) {
+				if(casillas[i][j].esMina() == false) {// si no es mina
+					if(casillas[i][j].darSeleccionada() == false) {// no ha sido seleccionada
+						gano = false;
+					}
+				}
+			}
+		}
+		return gano;
 	}
 
 
