@@ -160,8 +160,19 @@ public class Buscaminas {
 	public int cantidadMinasAlrededor(int i, int j) {
 
 		// TODO
+		int contador = 0;
+		Casilla t = casillas [i][j];
+		for(int h = 0; h<casillas.length; h++) {
+			for(int k = 0; k<casillas[0].length; k++) {
+				if(casillas[i][j].esMina() == true) {
+					contador++;
+				}	
+			}
+			
+		}
+		
 
-		return 0;
+		return contador;
 	}
 
 	/**
@@ -179,8 +190,13 @@ public class Buscaminas {
 	 * @return String - El tablero en formato String
 	 */
 	public String mostrarTablero() {
-
+		int num = 1;
 		// TODO
+		for(int i = 0; i<casillas.length; i ++) {//columnas
+			for(int j = 0; j<casillas[0].length;j++) {
+				
+			}
+		}
 
 		return null;
 	}
