@@ -9,7 +9,7 @@
 
 
 package modelo;
-
+import java.util.Random;
 
 public class Buscaminas {
 
@@ -102,6 +102,7 @@ public class Buscaminas {
 	 */
 	private boolean perdio;
 
+
 	// -----------------------------------------------------------------
 	// Constructores
 	// -----------------------------------------------------------------
@@ -130,15 +131,16 @@ public class Buscaminas {
 		// TODO
 		if(nivel == PRINCIPIANTE) {
 			casillas = new Casilla [FILAS_PRINCIPIANTE] [COLUMNAS_PRINCIPIANTE];
+			cantidadMinas = CANTIDAD_MINAS_PRINCIPANTE;
 		}
 		if(nivel ==  INTERMEDIO) {
 			casillas = new Casilla [FILAS_INTERMEDIO] [COLUMNAS_INTERMEDIO];
+			cantidadMinas = CANTIDAD_MINAS_INTERMEDIO;
 		}
-		
 		if(nivel == EXPERTO) {
 			casillas = new Casilla [FILAS_EXPERTO] [COLUMNAS_EXPERTO] ;
+			cantidadMinas = CANTIDAD_MINAS_EXPERTO;
 		}
-
 	}
 		
 
@@ -152,8 +154,7 @@ public class Buscaminas {
 			for(int j = 0; j<casillas[j].length;j++) {
 				casillas[i][j] = new Casilla(Casilla.LIBRE);
 			}
-		}
-				
+		}		
 	}
 
 
@@ -163,25 +164,58 @@ public class Buscaminas {
 	 * @param j - la columna de la matriz
 	 * @return int - La cantidad de minas que tiene alrededor la casilla [i][j]
 	 */
-	public int cantidadMinasAlrededor(int i, int j) { //que rango cubre el alrededor?
+	public int cantidadMinasAlrededor(int i, int j) {
 
 		// TODO
 		int contador = 0;
 		int inicioFila = i-1;
 		int inicioColumna = j-1;
-		if(inicioFila == 0 && inicioColumna < casillas[0].length) {
-			for(int g = 0; g<1; g++) {
-				for(int f = inicioColumna; f<2; f++) {
-					if(casillas[g][f].esMina() == true) {
-						contador++;
-						casillas[i][j].modificarValor(contador);
+		
+		if(i == 0 ) {// si esta en en la primera fila
+			if(j < casillas[0].length-1) {
+				for(int g = 0; g<1; g++) {
+					for(int f = inicioColumna; f<(inicioColumna+2); f++) {
+						if(casillas[g][f].esMina() == true) {
+							contador++;
+							casillas[i][j].modificarValor(contador);
+						}
 					}
 				}
 			}
+			else if(j == casillas[0].length && inicioColumna>0) {
+				
+			}
+			else {
+				
+			}
+			
 		}
+		
+		else if(i == casillas.length) {//si esta en la ultima fila
+			if(j == 0) {// si esta en el rincon izquierdo
+				
+			}
+			else if(j < casillas[0].length && j>0) {// si esta antes del rincon derecho
+				
+			}
+			else {
+				
+			}
+			
+			
+		}
+		
+		else if(j == 0 ) {
+			
+		}
+		
+		else if(j == casillas[0].length) {
+			
+		}
+		
 		else {
-			for(int h = inicioFila; h<2; h++) {
-				for(int k = inicioColumna; k<2; k++) {
+			for(int h = inicioFila; h<(inicioFila+2); h++) {
+				for(int k = inicioColumna; k<(inicioColumna+2); k++) {
 					if(casillas[h][k].esMina() == true) {
 						contador++;
 						casillas[i][j].modificarValor(contador);
@@ -199,7 +233,9 @@ public class Buscaminas {
 	public void generarMinas() {
 
 		// TODO
-		
+		Random i = new Random();
+		Random j = new Random();
+		casillas[i.nextInt(cantidadMinas)][j.nextInt(cantidadMinas)] = new Casilla(Casilla.MINA);
 	}
 
 
