@@ -128,6 +128,7 @@ public class Buscaminas {
 	private void inicializarPartida() {
 
 		// TODO
+	
 		if(nivel == PRINCIPIANTE) {
 			casillas = new Casilla [FILAS_PRINCIPIANTE] [COLUMNAS_PRINCIPIANTE];
 		}
@@ -136,10 +137,11 @@ public class Buscaminas {
 		}
 		
 		if(nivel == EXPERTO) {
-			casillas = new Casilla [COLUMNAS_EXPERTO] [FILAS_EXPERTO];
+			casillas = new Casilla [FILAS_EXPERTO] [COLUMNAS_EXPERTO] ;
 		}
-	}
 
+	}
+		
 
 	/**
 	 * Metodo que se encarga de inicializar todas las casillas que no son minas
@@ -147,7 +149,12 @@ public class Buscaminas {
 	public void inicializarCasillasLibres() {
 		
 		// TODO
-
+		for(int i = 0; i<casillas.length; i++) {
+			for(int j = 0; j<casillas[j].length;j++) {
+				casillas[i][j] = new Casilla(Casilla.LIBRE);
+			}
+		}
+				
 	}
 
 
@@ -161,9 +168,13 @@ public class Buscaminas {
 
 		// TODO
 		int contador = 0;
-		Casilla t = casillas [i][j];
-		for(int h = 0; h<casillas.length; h++) {
-			for(int k = 0; k<casillas[0].length; k++) {
+		int inicioFila = i-1;
+		int inicioColumna = j-1;
+		if(inicioFila == 0 && inicioColumna < casillas[0].length) {
+			
+		}
+		for(int h = inicioFila; h<2; h++) {
+			for(int k = inicioColumna; k<2; k++) {
 				if(casillas[h][k].esMina() == true) {
 					contador++;
 					casillas[i][j].modificarValor(contador);
@@ -192,7 +203,7 @@ public class Buscaminas {
 	 */
 	public String mostrarTablero() {
 		// TODO
-		int num = 1;
+		String num = " ";
 		for(int i = 0; i<casillas.length; i ++) {//columnas
 			for(int j = 0; j<casillas[0].length;j++) {
 				casillas[i][j].modificarValor(num);
@@ -200,7 +211,7 @@ public class Buscaminas {
 			}
 		}
 
-		return casillas.toString();
+		return num; 
 	}
 
 
