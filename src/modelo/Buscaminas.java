@@ -128,7 +128,6 @@ public class Buscaminas {
 	private void inicializarPartida() {
 
 		// TODO
-	
 		if(nivel == PRINCIPIANTE) {
 			casillas = new Casilla [FILAS_PRINCIPIANTE] [COLUMNAS_PRINCIPIANTE];
 		}
@@ -171,19 +170,26 @@ public class Buscaminas {
 		int inicioFila = i-1;
 		int inicioColumna = j-1;
 		if(inicioFila == 0 && inicioColumna < casillas[0].length) {
-			
-		}
-		for(int h = inicioFila; h<2; h++) {
-			for(int k = inicioColumna; k<2; k++) {
-				if(casillas[h][k].esMina() == true) {
-					contador++;
-					casillas[i][j].modificarValor(contador);
-				}	
+			for(int g = 0; g<1; g++) {
+				for(int f = inicioColumna; f<2; f++) {
+					if(casillas[g][f].esMina() == true) {
+						contador++;
+						casillas[i][j].modificarValor(contador);
+					}
+				}
 			}
-			
+		}
+		else {
+			for(int h = inicioFila; h<2; h++) {
+				for(int k = inicioColumna; k<2; k++) {
+					if(casillas[h][k].esMina() == true) {
+						contador++;
+						casillas[i][j].modificarValor(contador);
+					}
+				}
+			}
 		}
 		
-
 		return contador;
 	}
 
@@ -203,15 +209,17 @@ public class Buscaminas {
 	 */
 	public String mostrarTablero() {
 		// TODO
-		String num = " ";
+		String casilla = " ";
 		for(int i = 0; i<casillas.length; i ++) {//columnas
 			for(int j = 0; j<casillas[0].length;j++) {
-				casillas[i][j].modificarValor(num);
-				num++;
+				casilla += " "+casillas[i][j].mostrarValorCasilla();
+				if(j == casillas[0].length-1) {
+					casilla += "\n";
+				}
 			}
 		}
 
-		return num; 
+		return casilla; 
 	}
 
 
