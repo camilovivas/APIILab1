@@ -2,12 +2,12 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * $Id$
  * Universidad Icesi (Cali - Colombia)
- * Propuesta de solución laboratorio Unidad 5
- * @author Camilo Barrios - camilo.barrios@correo.icesi.edu.co
+ * laboratorio 1 de apoII
+ * @author Camilo Vivas - camilo-152000@hotmail.com
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-//comprobacion
+
 package modelo;
 
 public class Casilla {
