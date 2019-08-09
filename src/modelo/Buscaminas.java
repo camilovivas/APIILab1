@@ -239,8 +239,19 @@ public class Buscaminas {
 		// TODO
 		Random i = new Random();
 		Random j = new Random();
-		if(casillas[i.nextInt(cantidadMinas)][j.nextInt(cantidadMinas)] == null) {
-			casillas[i.nextInt(cantidadMinas)][j.nextInt(cantidadMinas)] = new Casilla(Casilla.MINA);
+		int filas = casillas.length;
+		int columnas = casillas[0].length;
+		boolean listo = false;
+		int contador = 0;
+			while(!listo) {
+				if(casillas[i.nextInt(filas)][j.nextInt(columnas)] == null) {
+			casillas[i.nextInt(filas)][j.nextInt(columnas)] = new Casilla(Casilla.MINA);
+			contador++;
+			if(contador == cantidadMinas) {
+				listo = true;
+			}
+			}
+		
 		}
 	}
 
@@ -252,7 +263,7 @@ public class Buscaminas {
 	public String mostrarTablero() {
 		// TODO
 		
-		String casilla = " ";
+		String casilla = "";
 		for(int i = 0; i<casillas.length; i ++) {//columnas
 			for(int j = 0; j<casillas[0].length;j++) {
 				casilla += " "+casillas[i][j].mostrarValorCasilla();
