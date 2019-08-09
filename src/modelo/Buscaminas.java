@@ -115,7 +115,6 @@ public class Buscaminas {
 		this.nivel = nivel;
 		perdio = false;
 		inicializarPartida();
-
 	}
 
 
@@ -132,6 +131,8 @@ public class Buscaminas {
 		if(nivel == PRINCIPIANTE) {
 			casillas = new Casilla [FILAS_PRINCIPIANTE] [COLUMNAS_PRINCIPIANTE];
 			cantidadMinas = CANTIDAD_MINAS_PRINCIPANTE;
+			generarMinas();
+			inicializarCasillasLibres();
 		}
 		if(nivel ==  INTERMEDIO) {
 			casillas = new Casilla [FILAS_INTERMEDIO] [COLUMNAS_INTERMEDIO];
@@ -151,8 +152,11 @@ public class Buscaminas {
 		
 		// TODO
 		for(int i = 0; i<casillas.length; i++) {
-			for(int j = 0; j<casillas[j].length;j++) {
-				casillas[i][j] = new Casilla(Casilla.LIBRE);
+			for(int j = 0; j<casillas[0].length;j++) {
+				if(casillas[i][j] == null) {
+//				if(casillas[i][j].esMina() == true) {
+					casillas[i][j] = new Casilla(Casilla.LIBRE);
+				}
 			}
 		}		
 	}
@@ -235,7 +239,9 @@ public class Buscaminas {
 		// TODO
 		Random i = new Random();
 		Random j = new Random();
-		casillas[i.nextInt(cantidadMinas)][j.nextInt(cantidadMinas)] = new Casilla(Casilla.MINA);
+		if(casillas[i.nextInt(cantidadMinas)][j.nextInt(cantidadMinas)] == null) {
+			casillas[i.nextInt(cantidadMinas)][j.nextInt(cantidadMinas)] = new Casilla(Casilla.MINA);
+		}
 	}
 
 
@@ -245,6 +251,7 @@ public class Buscaminas {
 	 */
 	public String mostrarTablero() {
 		// TODO
+		
 		String casilla = " ";
 		for(int i = 0; i<casillas.length; i ++) {//columnas
 			for(int j = 0; j<casillas[0].length;j++) {
