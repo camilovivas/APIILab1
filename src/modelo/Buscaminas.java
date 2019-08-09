@@ -137,10 +137,14 @@ public class Buscaminas {
 		if(nivel ==  INTERMEDIO) {
 			casillas = new Casilla [FILAS_INTERMEDIO] [COLUMNAS_INTERMEDIO];
 			cantidadMinas = CANTIDAD_MINAS_INTERMEDIO;
+			generarMinas();
+			inicializarCasillasLibres();
 		}
 		if(nivel == EXPERTO) {
 			casillas = new Casilla [FILAS_EXPERTO] [COLUMNAS_EXPERTO] ;
 			cantidadMinas = CANTIDAD_MINAS_EXPERTO;
+			generarMinas();
+			inicializarCasillasLibres();
 		}
 	}
 		
@@ -264,6 +268,12 @@ public class Buscaminas {
 		// TODO
 		
 		String casilla = "";
+		for(int h = 0; h<casillas.length; h++) {
+			casilla +=" "+(h+1);
+		}
+		for(int k = 0; k<casillas[0].length; k++) {
+			casilla += "\n"+(k+1);
+		}
 		for(int i = 0; i<casillas.length; i ++) {//columnas
 			for(int j = 0; j<casillas[0].length;j++) {
 				casilla += " "+casillas[i][j].mostrarValorCasilla();
