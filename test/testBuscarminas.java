@@ -15,9 +15,9 @@ class testBuscarminas {
 	public void generarMinas(){
 		Buscaminas a = new Buscaminas(Buscaminas.PRINCIPIANTE);
 		int contador = 0;
-		for(int i = 0; i<a.casillas.length; i++) {
-			for(int j = 0; j<a.casillas[0].length; j++) {
-				if(a.casillas[i][j].esMina() == true) {
+		for(int i = 0; i<a.darCasillas().length; i++) {
+			for(int j = 0; j<a.darCasillas()[0].length; j++) {
+				if(a.darCasillas()[i][j].esMina() == true) {
 					contador++;
 				}
 			}
@@ -28,14 +28,17 @@ class testBuscarminas {
 	
 	@Test
 	public void mostrarTablero() {
-		
-		
+		Buscaminas c = new Buscaminas(Buscaminas.PRINCIPIANTE);
+		String tablero = c.mostrarTablero();
+		String esperado = " 1 2 3 4 5 6 7 8";
+		//cual assert seria mejor para comparar los dos String
 	}
 	
 	@Test
 	public void recorridoEsquinaDerechaSuperior() {
 		Buscaminas b = new Buscaminas(Buscaminas.PRINCIPIANTE);
-		b.casillas[0][6] = new Casilla(Casilla.MINA);
+		b.darCasillas()[0][6] = new Casilla(Casilla.MINA);
+		
 		b.inicializarCasillasLibres();
 		int minas = b.recorridoEsquinaDerechaSuperior(1, 8);
 		assertEquals(1, minas);

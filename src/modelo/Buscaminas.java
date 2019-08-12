@@ -85,7 +85,7 @@ public class Buscaminas {
 	/**
 	 * Relacion que tiene la matriz de casillas
 	 */
-	public Casilla[][] casillas;
+	private Casilla[][] casillas;
 
 	/**
 	 * Atributo que representa el nivel del juego <Solo puede tomar valores PRINCIPIANTE, INTERMEDIO, EXPERTO>
@@ -290,9 +290,7 @@ public class Buscaminas {
 		// TODO
 		String casilla = " ";
 		for(int h = 0; h<casillas[0].length; h++) {
-			
-			if(nivel == EXPERTO) {
-				
+			if(nivel == EXPERTO || nivel == INTERMEDIO) {
 				if((h+1)>9) {
 					casilla +=" "+(h+1);
 				}
@@ -300,9 +298,7 @@ public class Buscaminas {
 					casilla +=" "+(h+1)+" ";
 				}
 			}
-			else if (nivel == INTERMEDIO) {
-				casilla +="  "+(h+1);
-			}
+			
 			else {
 				casilla +=" "+(h+1);
 			}
@@ -310,10 +306,10 @@ public class Buscaminas {
 		casilla += "\n"+1;
 		for(int i = 0; i<casillas.length; i ++) {
 			for(int j = 0; j<casillas[0].length;j++) {
-				if(nivel == EXPERTO) {
+				if(nivel == EXPERTO || nivel == INTERMEDIO) {
 					casilla += " "+casillas[i][j].mostrarValorCasilla()+" ";
 				}
-				else if(nivel == INTERMEDIO) {
+				else {
 					casilla += " "+casillas[i][j].mostrarValorCasilla();
 				}
 				if(j == casillas[0].length-1 && i<casillas.length-1) {
