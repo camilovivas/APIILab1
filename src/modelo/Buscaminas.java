@@ -125,7 +125,7 @@ public class Buscaminas {
 	/**
 	 * Se encarga de inicializar los atributos y relaciones de la clase buscaminas a partir del nivel elegido por el usuario
 	 */
-	private void inicializarPartida() {
+	private void inicializarPartida()  {//throws ExceptionNumeroNivelElegido
 
 		// TODO
 		if(nivel == PRINCIPIANTE) {
