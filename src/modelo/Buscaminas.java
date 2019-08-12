@@ -85,7 +85,7 @@ public class Buscaminas {
 	/**
 	 * Relacion que tiene la matriz de casillas
 	 */
-	private Casilla[][] casillas;
+	public Casilla[][] casillas;
 
 	/**
 	 * Atributo que representa el nivel del juego <Solo puede tomar valores PRINCIPIANTE, INTERMEDIO, EXPERTO>
@@ -175,9 +175,11 @@ public class Buscaminas {
 	public int cantidadMinasAlrededor(int i, int j) {
 
 		// TODO
+		int reguladorC = j-1;
+		int reguladorF = i-1;
 		int contador = 0;
-		int inicioFila = i-1;
-		int inicioColumna = j-1;
+		int inicioFila = reguladorF-1;
+		int inicioColumna = reguladorC-1;
 		
 		if(i == 0 ) {// si esta en en la primera fila
 			if(j < casillas[0].length-1) {
@@ -190,7 +192,8 @@ public class Buscaminas {
 					}
 				}
 			}
-			else if(j == casillas[0].length && inicioColumna>0) {
+			else if(j == casillas[0].length && i==0) {
+				
 				
 			}
 			else {
@@ -234,6 +237,25 @@ public class Buscaminas {
 		
 		return contador;
 	}
+	
+	public int recorridoEsquinaDerechaSuperior(int i, int j) {
+		int reguladorC = j-1;
+		int reguladorF = i-1;
+		int contador = 0;
+		int inicioFila = reguladorF-1;
+		int inicioColumna = reguladorC-1;
+		
+		for(int t = 0; t<1; t++) {
+			for(int y = inicioColumna; y<(inicioFila+1); y++) {
+				if(casillas[t][y].esMina() == true) {
+					contador++;
+//					casillas[reguladorF][reguladorC].modificarValor(contador);
+				}
+			}
+		}
+		
+		return contador;
+	}
 
 	/**
 	 * Método que se encarga de generar aleatoriomente las minas
@@ -266,19 +288,36 @@ public class Buscaminas {
 	 */
 	public String mostrarTablero() {
 		// TODO
-		
-		String casilla = "";
-		for(int h = 0; h<casillas.length; h++) {
-			casilla +=" "+(h+1);
+		String casilla = " ";
+		for(int h = 0; h<casillas[0].length; h++) {
+			
+			if(nivel == EXPERTO) {
+				
+				if((h+1)>9) {
+					casilla +=" "+(h+1);
+				}
+				else {
+					casilla +=" "+(h+1)+" ";
+				}
+			}
+			else if (nivel == INTERMEDIO) {
+				casilla +="  "+(h+1);
+			}
+			else {
+				casilla +=" "+(h+1);
+			}
 		}
-		for(int k = 0; k<casillas[0].length; k++) {
-			casilla += "\n"+(k+1);
-		}
-		for(int i = 0; i<casillas.length; i ++) {//columnas
+		casilla += "\n"+1;
+		for(int i = 0; i<casillas.length; i ++) {
 			for(int j = 0; j<casillas[0].length;j++) {
-				casilla += " "+casillas[i][j].mostrarValorCasilla();
-				if(j == casillas[0].length-1) {
-					casilla += "\n";
+				if(nivel == EXPERTO) {
+					casilla += " "+casillas[i][j].mostrarValorCasilla()+" ";
+				}
+				else if(nivel == INTERMEDIO) {
+					casilla += " "+casillas[i][j].mostrarValorCasilla();
+				}
+				if(j == casillas[0].length-1 && i<casillas.length-1) {
+					casilla += "\n"+(i+2);
 				}
 			}
 		}
