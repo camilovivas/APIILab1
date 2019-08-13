@@ -192,16 +192,14 @@ public class Buscaminas {
 		
 		else if(i == casillas.length) {//si esta en la ultima fila
 			if((j-1) == 0) {// si esta en el rincon izquierdo
-				recorridoEquinaIzqInferior();
+				recorridoEsquinaIzqInferior();
 			}
 			else if(j < casillas[0].length && j>0) {// si esta en la mitad
-				
+				recorridoCentroInferior(reguladorC);
 			}
 			else {
-				
-			}
-			
-			
+				recorridoDerInferior();
+			}	
 		}
 		
 		else if(j == 1 && (i>1 && i<casillas.length)) {
@@ -281,7 +279,7 @@ public class Buscaminas {
 		return contador;
 	}
 	
-	public int recorridoEquinaIzqInferior() {
+	public int recorridoEsquinaIzqInferior() {
 		int ultimaFila = casillas.length-1;
 		int contador = 0;
 		if(casillas[ultimaFila][1].esMina()== true) {
@@ -293,6 +291,40 @@ public class Buscaminas {
 			}
 		}
 		
+		return contador;
+	}
+	
+	public int recorridoCentroInferior(int j) {
+		int ultimaFila = casillas.length-1;
+		int contador =0;
+		if(casillas[ultimaFila][j-1].esMina() == true) {
+			contador++;
+		}
+		else if(casillas[ultimaFila][j+1].esMina() == true) {
+			contador++;
+		}
+		for (int i = j-1; i < j+2; i++) {
+			if(casillas[ultimaFila-1][i].esMina() == true) {
+				contador++;
+			}
+		}
+		
+		return contador;
+	}
+	
+	public int recorridoDerInferior() {
+		int ultimaFila = casillas.length-1;
+		int ultimaCol = casillas[0].length-1;
+		int contador = 0;
+		
+		if (casillas[ultimaFila][ultimaCol].esMina() == true) {
+			contador++;
+		}
+		for (int i = ultimaCol-1; i < ultimaCol; i++) {
+			if(casillas[ultimaFila][i].esMina() == true) {
+				contador++;
+			}
+		}
 		return contador;
 	}
 	

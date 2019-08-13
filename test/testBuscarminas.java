@@ -59,6 +59,16 @@ class testBuscarminas {
 		
 	}
 	
+	@Test
+	public void recorridoCentroInferior() {
+		Buscaminas e = new Buscaminas(Buscaminas.PRINCIPIANTE);
+		e.darCasillas()[6][7]= new Casilla(Casilla.MINA);
+		int minas = e.recorridoCentroInferior(6);
+		assertEquals(1, minas);
+
+	
+	}
+	
 	
 
 }
