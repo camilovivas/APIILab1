@@ -14,6 +14,8 @@ class testBuscarminas {
 	@Test
 	public void generarMinas(){
 		Buscaminas a = new Buscaminas(Buscaminas.PRINCIPIANTE);
+//		a.generarMinas();
+//		a.inicializarCasillasLibres();
 		int contador = 0;
 		for(int i = 0; i<a.darCasillas().length; i++) {
 			for(int j = 0; j<a.darCasillas()[0].length; j++) {
@@ -23,12 +25,14 @@ class testBuscarminas {
 			}
 		}
 		
-		assertEquals(10,contador);
+		assertEquals(Buscaminas.CANTIDAD_MINAS_PRINCIPANTE,contador);
 	}
 	
 	@Test
 	public void mostrarTablero() {
 		Buscaminas c = new Buscaminas(Buscaminas.PRINCIPIANTE);
+//		c.generarMinas();
+//		c.inicializarCasillasLibres();
 		String tablero = c.mostrarTablero();
 		String esperado = "  1 2 3 4 5 6 7 8"+"\n"+"1 - - - - - - - -"+"\n"+"2 - - - - - - - -"+"\n"+"3 - - - - - - - -"+"\n"+"4 - - - - - - - -"+"\n"+"5 - - - - - - - -"+"\n"+"6 - - - - - - - -"+"\n"+"7 - - - - - - - -"+"\n"+"8 - - - - - - - -";
 		assertEquals(esperado, tablero);
@@ -40,19 +44,21 @@ class testBuscarminas {
 		b.darCasillas()[0][6] = new Casilla(Casilla.MINA);
 		b.darCasillas()[1][6] = new Casilla(Casilla.MINA);
 		b.darCasillas()[1][7] = new Casilla(Casilla.MINA);
-//		b.inicializarCasillasLibres();
-		int minas = b.recorridoEsquinaDerechaSuperior(1, 8);
-		assertEquals(1, minas);
+		b.inicializarCasillasLibres();
+		int minas = b.recorridoEsquinaDerechaSuperior();
+		assertEquals(3, minas);
 	}
 	
 	@Test
 	public void recorridoSuperior() {
 		Buscaminas d = new Buscaminas(Buscaminas.PRINCIPIANTE);
 		d.darCasillas()[1][3] = new Casilla(Casilla.MINA);
-//		d.inicializarCasillasLibres();
+		d.inicializarCasillasLibres();
 		int minas = d.recorridoCentroSuperior(0, 3);
 		assertEquals(1, minas);
 		
 	}
+	
+	
 
 }

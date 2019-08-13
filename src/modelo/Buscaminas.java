@@ -153,8 +153,6 @@ public class Buscaminas {
 	 * Metodo que se encarga de inicializar todas las casillas que no son minas
 	 */
 	public void inicializarCasillasLibres() {
-		
-		// TODO
 		for(int i = 0; i<casillas.length; i++) {
 			for(int j = 0; j<casillas[0].length;j++) {
 				if(casillas[i][j] == null) {
@@ -181,23 +179,22 @@ public class Buscaminas {
 		int inicioColumna = reguladorC-1;
 		
 		if((i-1) == 0 ) {// si esta en en la primera fila
-			if(j < casillas[0].length-1 && j > 1) {//si esta en la mitad
+			if(j < casillas[0].length && j > 1) {//si esta en la mitad
 				recorridoCentroSuperior(i,j);
 			}
 			else if(j == casillas[0].length) {//esquina superior derecha
-				recorridoEsquinaDerechaSuperior(i,j);
+				recorridoEsquinaDerechaSuperior();
 			}
 			else {//si esta en la esquina izquierda
-				
+				recorridoEsquinaIzqSuperior();
 			}
-			
 		}
 		
 		else if(i == casillas.length) {//si esta en la ultima fila
-			if(j == 0) {// si esta en el rincon izquierdo
-				
+			if((j-1) == 0) {// si esta en el rincon izquierdo
+				recorridoEquinaIzqInferior();
 			}
-			else if(j < casillas[0].length && j>0) {// si esta antes del rincon derecho
+			else if(j < casillas[0].length && j>0) {// si esta en la mitad
 				
 			}
 			else {
@@ -207,11 +204,11 @@ public class Buscaminas {
 			
 		}
 		
-		else if(j == 0 ) {
+		else if(j == 1 && (i>1 && i<casillas.length)) {
 			
 		}
 		
-		else if(j == casillas[0].length) {
+		else if(j == casillas[0].length && (i>1 && i<casillas.length)) {
 			
 		}
 		
@@ -229,19 +226,17 @@ public class Buscaminas {
 		return contador;
 	}
 	
-	public int recorridoEsquinaDerechaSuperior(int i, int j) {
-		int reguladorC = j-1;
-		int reguladorF = i-1;
+	public int recorridoEsquinaDerechaSuperior() {
+		int regulador = casillas[0].length-2;
 		int contador = 0;
-		int inicioFila = reguladorF-1;
-		int inicioColumna = reguladorC-1;
 		
-		for(int t = 0; t<1; t++) {
-			for(int y = inicioColumna; y<(reguladorC+1); y++) {
-				if(casillas[t][y].esMina() == true) {
+		if(casillas[0][regulador].esMina()== true) {
+			contador++;
+		}
+		for(int t = regulador; t<(regulador+2); t++) {
+				if(casillas[1][t].esMina() == true) {
 					contador++;
 //					casillas[reguladorF][reguladorC].modificarValor(contador);
-				}
 			}
 		}
 		
@@ -255,12 +250,46 @@ public class Buscaminas {
 		int inicioFila = reguladorF-1;
 		int inicioColumna = reguladorC-1;
 		
+		
 		for(int g = 0; g<1; g++) {
 			for(int f = inicioColumna; f<(inicioColumna+2); f++) {
-				if(casillas[g][f].esMina() == true) {
-					contador++;
-//					casillas[i][j].modificarValor(contador);
+				if(g == reguladorF &&  f == reguladorC) {
+					f++;
 				}
+				else {
+					if(casillas[g][f].esMina() == true) {
+						contador++;
+//						casillas[i][j].modificarValor(contador);
+					}
+				}
+			}
+		}
+		
+		return contador;
+	}
+	
+	public int recorridoEsquinaIzqSuperior() {
+		int contador = 0;
+		if(casillas[0][1].esMina() == true) {
+			contador++;
+		}
+		for (int k2 = 0; k2 <2; k2++) {
+			if(casillas[1][k2].esMina() == true) {
+				contador++;
+			}
+		}
+		return contador;
+	}
+	
+	public int recorridoEquinaIzqInferior() {
+		int ultimaFila = casillas.length-1;
+		int contador = 0;
+		if(casillas[ultimaFila][1].esMina()== true) {
+			contador++;
+		}
+		for (int i = 0; i <2; i++) {
+			if(casillas[ultimaFila-1][i].esMina() == true) {
+				contador++;
 			}
 		}
 		
@@ -282,13 +311,13 @@ public class Buscaminas {
 				if(casillas[i.nextInt(filas)][j.nextInt(columnas)] == null) {
 					casillas[i.nextInt(filas)][j.nextInt(columnas)] = new Casilla(Casilla.MINA);
 					contador++;
-					if(contador == cantidadMinas) {
-						listo = true;
-					}
+					
+			}
+			if(contador == cantidadMinas) {
+					listo = true;
 			}
 		}
 	}
-
 
 	/**
 	 * Metodo que se encarga de convertir el tablero a un String para poder verlo en pantalla
