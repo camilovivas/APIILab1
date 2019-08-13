@@ -30,8 +30,7 @@ class testBuscarminas {
 	public void mostrarTablero() {
 		Buscaminas c = new Buscaminas(Buscaminas.PRINCIPIANTE);
 		String tablero = c.mostrarTablero();
-		String esperado = " 1 2 3 4 5 6 7 8";
-		//cual assert seria mejor para comparar los dos String
+		String esperado = "  1 2 3 4 5 6 7 8"+"\n"+"1 - - - - - - - -"+"\n"+"2 - - - - - - - -"+"\n"+"3 - - - - - - - -"+"\n"+"4 - - - - - - - -"+"\n"+"5 - - - - - - - -"+"\n"+"6 - - - - - - - -"+"\n"+"7 - - - - - - - -"+"\n"+"8 - - - - - - - -";
 		assertEquals(esperado, tablero);
 	}
 	
@@ -39,10 +38,21 @@ class testBuscarminas {
 	public void recorridoEsquinaDerechaSuperior() {
 		Buscaminas b = new Buscaminas(Buscaminas.PRINCIPIANTE);
 		b.darCasillas()[0][6] = new Casilla(Casilla.MINA);
-		
-		b.inicializarCasillasLibres();
+		b.darCasillas()[1][6] = new Casilla(Casilla.MINA);
+		b.darCasillas()[1][7] = new Casilla(Casilla.MINA);
+//		b.inicializarCasillasLibres();
 		int minas = b.recorridoEsquinaDerechaSuperior(1, 8);
 		assertEquals(1, minas);
+	}
+	
+	@Test
+	public void recorridoSuperior() {
+		Buscaminas d = new Buscaminas(Buscaminas.PRINCIPIANTE);
+		d.darCasillas()[1][3] = new Casilla(Casilla.MINA);
+//		d.inicializarCasillasLibres();
+		int minas = d.recorridoCentroSuperior(0, 3);
+		assertEquals(1, minas);
+		
 	}
 
 }

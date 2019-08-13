@@ -158,7 +158,6 @@ public class Buscaminas {
 		for(int i = 0; i<casillas.length; i++) {
 			for(int j = 0; j<casillas[0].length;j++) {
 				if(casillas[i][j] == null) {
-//				if(casillas[i][j].esMina() == true) {
 					casillas[i][j] = new Casilla(Casilla.LIBRE);
 				}
 			}
@@ -181,22 +180,14 @@ public class Buscaminas {
 		int inicioFila = reguladorF-1;
 		int inicioColumna = reguladorC-1;
 		
-		if(i == 0 ) {// si esta en en la primera fila
-			if(j < casillas[0].length-1) {
-				for(int g = 0; g<1; g++) {
-					for(int f = inicioColumna; f<(inicioColumna+2); f++) {
-						if(casillas[g][f].esMina() == true) {
-							contador++;
-							casillas[i][j].modificarValor(contador);
-						}
-					}
-				}
+		if((i-1) == 0 ) {// si esta en en la primera fila
+			if(j < casillas[0].length-1 && j > 1) {//si esta en la mitad
+				recorridoCentroSuperior(i,j);
 			}
-			else if(j == casillas[0].length && i==0) {
-				
-				
+			else if(j == casillas[0].length) {//esquina superior derecha
+				recorridoEsquinaDerechaSuperior(i,j);
 			}
-			else {
+			else {//si esta en la esquina izquierda
 				
 			}
 			
@@ -246,7 +237,7 @@ public class Buscaminas {
 		int inicioColumna = reguladorC-1;
 		
 		for(int t = 0; t<1; t++) {
-			for(int y = inicioColumna; y<(inicioFila+1); y++) {
+			for(int y = inicioColumna; y<(reguladorC+1); y++) {
 				if(casillas[t][y].esMina() == true) {
 					contador++;
 //					casillas[reguladorF][reguladorC].modificarValor(contador);
@@ -256,13 +247,31 @@ public class Buscaminas {
 		
 		return contador;
 	}
-
+	
+	public int recorridoCentroSuperior(int i, int j) {
+		int reguladorC = j-1;
+		int reguladorF = i-1;
+		int contador = 0;
+		int inicioFila = reguladorF-1;
+		int inicioColumna = reguladorC-1;
+		
+		for(int g = 0; g<1; g++) {
+			for(int f = inicioColumna; f<(inicioColumna+2); f++) {
+				if(casillas[g][f].esMina() == true) {
+					contador++;
+//					casillas[i][j].modificarValor(contador);
+				}
+			}
+		}
+		
+		return contador;
+	}
+	
 	/**
 	 * Método que se encarga de generar aleatoriomente las minas
 	 */
 	public void generarMinas() {
-
-		// TODO
+		
 		Random i = new Random();
 		Random j = new Random();
 		int filas = casillas.length;
@@ -271,13 +280,12 @@ public class Buscaminas {
 		int contador = 0;
 			while(!listo) {
 				if(casillas[i.nextInt(filas)][j.nextInt(columnas)] == null) {
-			casillas[i.nextInt(filas)][j.nextInt(columnas)] = new Casilla(Casilla.MINA);
-			contador++;
-			if(contador == cantidadMinas) {
-				listo = true;
+					casillas[i.nextInt(filas)][j.nextInt(columnas)] = new Casilla(Casilla.MINA);
+					contador++;
+					if(contador == cantidadMinas) {
+						listo = true;
+					}
 			}
-			}
-		
 		}
 	}
 
@@ -332,11 +340,9 @@ public class Buscaminas {
 			for(int j = 0; j<casillas[0].length; j ++) {
 				if(casillas[i][j].darSeleccionada() == false) {
 					casillas[i][j].destapar();
-				}
-				
+				}		
 			}
 		}
-
 	}
 
 	/**
