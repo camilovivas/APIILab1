@@ -43,6 +43,8 @@ public class Menu {
 		mostrarBienvenida();
 		int dificultad = seleccionarDificultad();
 		juego = new Buscaminas(dificultad);
+		juego.generarMinas();
+		juego.inicializarCasillasLibres();
 		manejoJuego();
 	}
 
@@ -85,7 +87,7 @@ public class Menu {
 			case 2:
 				//Dar Pista
 				System.out.println(juego.darPista());
-				if(juego.gano()){
+				if(juego.gano() == true){
 					System.out.println("Felicitaciones Ganaste!!!!!!!");
 				}
 				break;
@@ -197,9 +199,6 @@ public class Menu {
 			seleccion = lector.nextInt();
 			lector.nextLine();
 
-			if(seleccion<1 || seleccion>3){
-				System.out.println("Por favor ingrese un valor correcto");
-			}
 		}
 
 		return seleccion;

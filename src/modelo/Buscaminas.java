@@ -114,40 +114,46 @@ public class Buscaminas {
 	public Buscaminas(int nivel) {
 		this.nivel = nivel;
 		perdio = false;
-		inicializarPartida();
+		try {
+			inicializarPartida();
+		} catch (ExceptionNumeroNivelElegido e) {
+			System.out.println(e.getMessage());
+			
+		}
+	
 	}
 
 
 	// -----------------------------------------------------------------
 	// Metodos
 	// -----------------------------------------------------------------
-
+	
 	/**
 	 * Se encarga de inicializar los atributos y relaciones de la clase buscaminas a partir del nivel elegido por el usuario
 	 */
-	private void inicializarPartida()  {//throws ExceptionNumeroNivelElegido
+	private void inicializarPartida() throws ExceptionNumeroNivelElegido {
 
 		// TODO
 		if(nivel == PRINCIPIANTE) {
 			casillas = new Casilla [FILAS_PRINCIPIANTE] [COLUMNAS_PRINCIPIANTE];
 			cantidadMinas = CANTIDAD_MINAS_PRINCIPANTE;
-			generarMinas();
-			inicializarCasillasLibres();
+
 		}
 		if(nivel ==  INTERMEDIO) {
 			casillas = new Casilla [FILAS_INTERMEDIO] [COLUMNAS_INTERMEDIO];
 			cantidadMinas = CANTIDAD_MINAS_INTERMEDIO;
-			generarMinas();
-			inicializarCasillasLibres();
 		}
 		if(nivel == EXPERTO) {
 			casillas = new Casilla [FILAS_EXPERTO] [COLUMNAS_EXPERTO] ;
 			cantidadMinas = CANTIDAD_MINAS_EXPERTO;
-			generarMinas();
-			inicializarCasillasLibres();
+			
+		}
+		
+		if(nivel < 1 || nivel > 3) {
+		 throw new ExceptionNumeroNivelElegido("por favor ingrese un numero del 1 al 3");	
 		}
 	}
-		
+	
 
 	/**
 	 * Metodo que se encarga de inicializar todas las casillas que no son minas
@@ -161,7 +167,7 @@ public class Buscaminas {
 			}
 		}		
 	}
-
+	
 
 	/**
 	 * Metodo que permite contar la cantidad de minas que tiene alrededor una casillas
@@ -169,55 +175,68 @@ public class Buscaminas {
 	 * @param j - la columna de la matriz
 	 * @return int - La cantidad de minas que tiene alrededor la casilla [i][j]
 	 */
-	public int cantidadMinasAlrededor(int i, int j) {
-
-		// TODO
+	public int cantidadMinasAlrededor(int i, int j) {//throws ExceptionPosicionElegida 
 		int reguladorC = j-1;
 		int reguladorF = i-1;
 		int contador = 0;
 		int inicioFila = reguladorF-1;
 		int inicioColumna = reguladorC-1;
-		
-		if((i-1) == 0 ) {// si esta en en la primera fila
-			if(j < casillas[0].length && j > 1) {//si esta en la mitad
-				recorridoCentroSuperior(i,j);
+//			if(i>casillas.length || j>casillas[0].length) {
+//				throw new ExceptionPosicionElegida("el numeor ingresado no concuerda");
+//			}
+//			else {
+			if(i == 1 ) {// si esta en en la primera fila
+				if(j < casillas[0].length && j > 1) {//si esta en la mitad
+					contador = recorridoCentroSuperior(reguladorC);
+				}
+				else if(j == casillas[0].length) {//esquina superior derecha
+					contador = recorridoEsquinaDerechaSuperior();
+				}
+				else {//si esta en la esquina izquierda
+					contador = recorridoEsquinaIzqSuperior();
+				}
 			}
-			else if(j == casillas[0].length) {//esquina superior derecha
-				recorridoEsquinaDerechaSuperior();
+			else if(i == casillas.length) {//si esta en la ultima fila
+				if((j-1) == 0) {// si esta en el rincon izquierdo
+					contador = recorridoEsquinaIzqInferior();
+				}
+				else if(j < casillas[0].length && j>0) {// si esta en la mitad
+				contador = recorridoCentroInferior(reguladorC);
+				}
+				else {
+					contador = recorridoDerInferior();
+				}	
 			}
-			else {//si esta en la esquina izquierda
-				recorridoEsquinaIzqSuperior();
+			else if(j == 1 && (i>1 && i<casillas.length)) {
+				contador = recorridoLateralIzq(reguladorF);
 			}
-		}
-		
-		else if(i == casillas.length) {//si esta en la ultima fila
-			if((j-1) == 0) {// si esta en el rincon izquierdo
-				recorridoEsquinaIzqInferior();
-			}
-			else if(j < casillas[0].length && j>0) {// si esta en la mitad
-				recorridoCentroInferior(reguladorC);
+			else if(j == casillas[0].length && (i>1 && i<casillas.length)) {
+				contador = recorridoLateralDer(reguladorF);
 			}
 			else {
-				recorridoDerInferior();
-			}	
+				contador = recorridoGeneral(reguladorF, reguladorC);
+			}
+//		}
+		return contador;
+	}
+	
+	
+	public int recorridoGeneral(int i, int j) {
+		int contador = 0;
+		if(casillas[i][j-1].esMina() == true) {
+			contador++;
 		}
 		
-		else if(j == 1 && (i>1 && i<casillas.length)) {
-			
+		if(casillas[i][j+1].esMina() == true) {
+			contador++;
 		}
-		
-		else if(j == casillas[0].length && (i>1 && i<casillas.length)) {
-			
-		}
-		
-		else {
-			for(int h = inicioFila; h<(inicioFila+2); h++) {
-				for(int k = inicioColumna; k<(inicioColumna+2); k++) {
-					if(casillas[h][k].esMina() == true) {
-						contador++;
-						casillas[i][j].modificarValor(contador);
-					}
-				}
+		for (int k = j-1; k < j+1; k++) {
+			if(casillas[i-1][k].esMina() == true || casillas[i+1][k].esMina() == true) {
+				contador++;
+				
+			}
+			else if(casillas[i-1][k].esMina() == true && casillas[i+1][k].esMina() == true) {
+				contador = contador+2;
 			}
 		}
 		
@@ -234,35 +253,28 @@ public class Buscaminas {
 		for(int t = regulador; t<(regulador+2); t++) {
 				if(casillas[1][t].esMina() == true) {
 					contador++;
-//					casillas[reguladorF][reguladorC].modificarValor(contador);
 			}
 		}
 		
 		return contador;
 	}
 	
-	public int recorridoCentroSuperior(int i, int j) {
-		int reguladorC = j-1;
-		int reguladorF = i-1;
-		int contador = 0;
-		int inicioFila = reguladorF-1;
-		int inicioColumna = reguladorC-1;
-		
-		
-		for(int g = 0; g<1; g++) {
-			for(int f = inicioColumna; f<(inicioColumna+2); f++) {
-				if(g == reguladorF &&  f == reguladorC) {
-					f++;
-				}
-				else {
-					if(casillas[g][f].esMina() == true) {
-						contador++;
-//						casillas[i][j].modificarValor(contador);
-					}
-				}
-			}
+	public int recorridoCentroSuperior(int j) {
+		int contador = 0;		
+		if(casillas[0][j+1].esMina() == true) {
+			contador++;
 		}
 		
+		if(casillas[0][j-1].esMina() == true) {
+			contador++;
+		}
+		
+		for(int g = j-1; g<j+1; g++) {
+			if(casillas[1][g].esMina() == true) {
+				contador++;
+//				casillas[i][j].modificarValor(contador);
+			}
+		}
 		return contador;
 	}
 	
@@ -303,7 +315,7 @@ public class Buscaminas {
 		else if(casillas[ultimaFila][j+1].esMina() == true) {
 			contador++;
 		}
-		for (int i = j-1; i < j+2; i++) {
+		for (int i = j-1; i < j+1; i++) {
 			if(casillas[ultimaFila-1][i].esMina() == true) {
 				contador++;
 			}
@@ -317,11 +329,48 @@ public class Buscaminas {
 		int ultimaCol = casillas[0].length-1;
 		int contador = 0;
 		
-		if (casillas[ultimaFila][ultimaCol].esMina() == true) {
+		if (casillas[ultimaFila][ultimaCol-1].esMina() == true) {
 			contador++;
 		}
-		for (int i = ultimaCol-1; i < ultimaCol; i++) {
-			if(casillas[ultimaFila][i].esMina() == true) {
+		for (int i = ultimaCol-1; i <= ultimaCol; i++) {
+			if(casillas[ultimaFila-1][i].esMina() == true) {
+				contador++;
+			}
+		}
+		return contador;
+	}
+	
+	public int recorridoLateralDer(int i) {
+		int ultimaColumna = casillas[0].length-1;
+		int contador = 0;
+		
+		if(casillas[i-1][ultimaColumna].esMina() == true) {
+			contador++;
+		}
+		
+		if(casillas[i+1][ultimaColumna].esMina() == true) {
+			contador++;
+		}
+		
+		for (int j = i-1; j < i+1; j++) {
+			if(casillas[j][ultimaColumna-1].esMina() == true) {
+				contador++;
+			}
+		}
+		return contador;
+	}
+	
+	public int recorridoLateralIzq(int i) {
+		int contador = 0;
+		if(casillas[i-1][0].esMina() == true) {
+			contador++;
+		}
+		
+		if(casillas[i+1][0].esMina() == true) {
+			contador++;
+		}
+		for (int j = i-1; j <i+1; j++) {
+			if(casillas[j][1].esMina() == true) {
 				contador++;
 			}
 		}
@@ -341,10 +390,13 @@ public class Buscaminas {
 		int contador = 0;
 			while(!listo) {
 				if(casillas[i.nextInt(filas)][j.nextInt(columnas)] == null) {
+						casillas[i.nextInt(filas)][j.nextInt(columnas)] = new Casilla(Casilla.MINA);
+						contador++;
+				}
+				else if(casillas[i.nextInt(filas)][j.nextInt(columnas)] != null){
 					casillas[i.nextInt(filas)][j.nextInt(columnas)] = new Casilla(Casilla.MINA);
-					contador++;
-					
-			}
+					contador--;
+				}
 			if(contador == cantidadMinas) {
 					listo = true;
 			}
@@ -396,11 +448,11 @@ public class Buscaminas {
 	 */
 	public void resolver() {
 
-		// TODO
 		for(int i = 0; i<casillas.length; i++) {
 			for(int j = 0; j<casillas[0].length; j ++) {
 				if(casillas[i][j].darSeleccionada() == false) {
 					casillas[i][j].destapar();
+//					casillas[i][j].modificarValor(cantidadMinasAlrededor(i, j));
 				}		
 			}
 		}
@@ -425,9 +477,13 @@ public class Buscaminas {
 	public boolean abrirCasilla(int i, int j) {
 		// TODO
 		boolean posible = true;
-		casillas[i][j].destapar();
+		
 		if(casillas[i][j].esMina() == true) {
 			posible = false;
+		}
+		else {
+			casillas[i][j].destapar();
+			casillas[i][j].modificarValor(cantidadMinasAlrededor(i, j));
 		}
 		return posible;
 	}
@@ -439,12 +495,17 @@ public class Buscaminas {
 	 */
 	public boolean gano() {
 		// TODO
-		boolean gano = true;
+		boolean gano = false;
+		int contador = 0;
+		int c = (casillas.length * casillas[0].length) - cantidadMinas;
 		for(int i = 0; i< casillas.length && !gano; i++) {
 			for(int j = 0; j<casillas[i].length && !gano; j++) {
-				if(casillas[i][j].esMina() == false) {// si no es mina
-					if(casillas[i][j].darSeleccionada() == false) {// no ha sido seleccionada
-						gano = false;
+				if(casillas[i][j].esMina() == false) {
+				if(casillas[i][j].darSeleccionada() == true) {// si no es mina
+					contador++;
+					if(contador == c) {// no ha sido seleccionada
+						gano = true;
+					}
 					}
 				}
 			}
@@ -458,9 +519,18 @@ public class Buscaminas {
 	 * @return String, Mensaje de la Casilla que marco abierta, En caso de no haber casillas posibles para dar una pista, retorna el mensaje no hay pistas para dar
 	 */
 	public String darPista() {
-
-		// TODO
-		return null;
+		String msj = " ";
+		for (int i = 0; i < casillas.length; i++) {
+			for (int j = 0; j < casillas[0].length; j++) {
+				
+				if(casillas[i][j].esMina() == false && casillas[i][j].darValor() > 0) {
+					casillas[i][j].destapar();
+					msj += "se abrio la casilla"+i+1+j+1;
+				}
+			}
+		}
+		
+		return  msj;
 	}
 	
 	/***
